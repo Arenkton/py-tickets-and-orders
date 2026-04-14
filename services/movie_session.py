@@ -15,7 +15,7 @@ def create_movie_session(
     )
 
 
-def get_movie_sessions(session_date: str = None) -> QuerySet:
+def get_movie_sessions(session_date: str = None) -> QuerySet[MovieSession]:
     queryset = MovieSession.objects.all()
 
     if session_date:
@@ -52,8 +52,7 @@ def delete_movie_session_by_id(session_id: int) -> None:
 
 
 def get_taken_seats(movie_session_id: int) -> list[dict]:
-    taken_seats = Ticket.objects.filter(
-        movie_session_id=movie_session_id
-    ).values("row", "seat")
-
-    return list(taken_seats)
+    return list(
+        Ticket.objects.filter(movie_session_id=movie_session_id)
+        .values("row", "seat")
+    )
